@@ -29,6 +29,16 @@ export function handleValidation({
       errors.email = 'is not valid';
     }
   }
+  if (!fields.photo) {
+    formIsValid = false;
+    errors.photo = 'cannot be empty';
+  }
+
+  if (fields.photo && fields.photo.size > 1024) {
+    formIsValid = false;
+    errors.photo = 'must be smaller than 1MB'
+  }
+
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
 
   // Password

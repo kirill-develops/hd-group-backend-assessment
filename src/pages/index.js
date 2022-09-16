@@ -18,7 +18,7 @@ const headingStyles = {
 
 const formStyles = {
   display: 'flex',
-  gap: '1rem',
+  gap: '1.5rem',
   flexDirection: 'column',
   alignItems: 'center',
   width: 'fit-content',
@@ -36,7 +36,7 @@ const passwordWrapperStyles = {
 
 const inputStyles = {
   width: '100%',
-  marginBottom: "8px",
+  marginBottom: "6px",
 }
 
 const errorStyles = {
@@ -53,14 +53,12 @@ const IndexPage = () => {
     passwordConfirm: ''
   })
 
-
   const handleFormValueChange = useCallback((e) => {
     setFormValues({
       ...formValues,
       [e.target.name]: e.target.value
     })
   }, [formValues]);
-
 
   const handlePhotoUpload = useCallback((e) => {
     setFormValues({
@@ -127,12 +125,16 @@ const IndexPage = () => {
           />
           {formErrors.email && <span style={errorStyles}>Email {formErrors.email}</span>}
         </div>
-        <input
-          type="file"
-          name="image"
-          accept='image/*'
-          onChange={handlePhotoUpload}
-        />
+        <div style={inputWrapperStyles}>
+          <input
+            type="file"
+            name="image"
+            accept='image/*'
+            onChange={handlePhotoUpload}
+            style={inputStyles}
+          />
+          {formErrors.photo && <span style={errorStyles}>Photo {formErrors.photo}</span>}
+        </div>
         <div style={inputWrapperStyles}>
           <div style={passwordWrapperStyles}>
             <input
