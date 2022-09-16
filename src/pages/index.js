@@ -1,4 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+
+import { handleValidation } from '../utils/handleValidation';
+import { run } from '../utils/handlePhotoUpload';
+import { addUser } from '../utils/addUser';
 
 const pageStyles = {
   color: '#232129',
@@ -14,16 +18,41 @@ const headingStyles = {
 
 const formStyles = {
   display: 'flex',
+  gap: '1rem',
   flexDirection: 'column',
+  alignItems: 'center',
+  width: 'fit-content',
+  margin: 'auto',
 }
 
+const inputWrapperStyles = {
+  width: '100%',
+}
+
+const passwordWrapperStyles = {
+  display: 'flex',
+  width: '100%',
+}
+
+const inputStyles = {
+  width: '100%',
+  marginBottom: "8px",
+}
+
+const errorStyles = {
+  color: 'red',
+  display: 'block',
+}
+
+
 const IndexPage = () => {
-  const [formErrors, setFormErrors] = useState({});
   const [formValues, setFormValues] = useState({
     email: '',
+    photo: '',
     password: '',
     passwordConfirm: ''
   })
+
 
   const handleFormValueChange = useCallback((e) => {
     setFormValues({
@@ -32,72 +61,54 @@ const IndexPage = () => {
     })
   }, [formValues]);
 
-  const handleValidation = useCallback(() => {
-    const fields = formValues;
-    const errors = {};
-    let formIsValid = true;
 
-    //Email
-    if (!fields.email) {
-      formIsValid = false;
-      errors.email = 'cannot be empty';
-    }
+  const handlePhotoUpload = useCallback((e) => {
+    setFormValues({
+      ...formValues,
+      photo: e.target.files[0]
+    })
+  }, [formValues])
 
-    if (fields.email) {
-      let lastAtPos = fields.email.lastIndexOf('@');
-      let lastDotPos = fields.email.lastIndexOf('.');
 
-      if (
-        !(
-          lastAtPos < lastDotPos &&
-          lastAtPos > 0 &&
-          fields.email.indexOf('@@') == -1 &&
-          lastDotPos > 2 &&
-          fields.email.length - lastDotPos > 2
-        )
-      ) {
-        formIsValid = false;
-        errors.email = 'is not valid';
-      }
-    }
-    const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8}$/;
+  // state and handler function to reveal password to user
+  const [passwordType, setPasswordType] = useState({
+    password1: 'password',
+    password2: 'password'
+  })
 
-    // Password
-    if (!fields.password) {
-      formIsValid = false;
-      errors.password = 'cannot be empty';
-    }
 
-    if (fields.password) {
-      if (!fields.password.match(passwordRules)) {
-        formIsValid = false;
-        errors.password = 'must contain atleast 1 number & 1 special character'
-      }
+  const handleReveal = useCallback((e) => {
+    if (passwordType[e.target.name] === 'password') {
+      setPasswordType({
+        ...passwordType,
+        [e.target.name]: 'text'
+      })
+    };
 
-      if (fields.password.length < 8) {
-        formIsValid = false;
-        errors.password = 'must be at least 8 characters'
-      }
-    }
+    if (passwordType[e.target.name] === 'text') {
+      setPasswordType({
+        ...passwordType,
+        [e.target.name]: 'password'
+      })
+    };
+  }, [passwordType]);
 
-    // passwordConfirm
-    if (fields.passwordConfirm !== fields.password) {
-      formIsValid = false;
-      errors.passwordConfirm = `doesn't match password above`
-    }
-    setFormErrors(errors);
 
-    return formIsValid;
-  }, [formValues]);
-
+  const [formErrors, setFormErrors] = useState({});
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    const isValid = handleValidation();
+    const { email, photo, password } = formValues;
+    const isValid = handleValidation({ formValues, setFormErrors });
+
 
     if (isValid) {
+      // ? producing error, posted question on stackOverflow
+      // run({ email, photo });
+      addUser({ email, photo, password });
     };
 
   }, [formValues]);
+
 
   return (
     <main style={pageStyles}>
@@ -105,27 +116,58 @@ const IndexPage = () => {
       <form
         onSubmit={handleSubmit}
         style={formStyles}>
+        <div style={inputWrapperStyles}>
+          <input
+            type="text"
+            placeholder="email"
+            name="email"
+            value={formValues.email}
+            onChange={handleFormValueChange}
+            style={inputStyles}
+          />
+          {formErrors.email && <span style={errorStyles}>Email {formErrors.email}</span>}
+        </div>
         <input
-          type="text"
-          placeholder="email"
-          name="email"
-          value={formValues.email}
-          onChange={handleFormValueChange}
+          type="file"
+          name="image"
+          accept='image/*'
+          onChange={handlePhotoUpload}
         />
-        <input
-          type="password"
-          placeholder="new password"
-          name="password"
-          value={formValues.password}
-          onChange={handleFormValueChange}
-        />
-        <input
-          type="password"
-          placeholder="re-enter password"
-          name="passwordConfirm"
-          value={formValues.passwordConfirm}
-          onChange={handleFormValueChange}
-        />
+        <div style={inputWrapperStyles}>
+          <div style={passwordWrapperStyles}>
+            <input
+              type={passwordType.password1}
+              placeholder="new password"
+              name="password"
+              value={formValues.password}
+              onChange={handleFormValueChange}
+              style={inputStyles}
+            />
+            <input
+              type='checkbox'
+              name='password1'
+              onClick={handleReveal}
+            />
+          </div>
+          {formErrors.password && <span style={errorStyles}>Password {formErrors.password}</span>}
+        </div>
+        <div style={inputWrapperStyles}>
+          <div style={passwordWrapperStyles}>
+            <input
+              type={passwordType.password2}
+              placeholder="re-enter password"
+              name="passwordConfirm"
+              value={formValues.passwordConfirm}
+              onChange={handleFormValueChange}
+              style={inputStyles}
+            />
+            <input
+              type='checkbox'
+              name='password2'
+              onClick={handleReveal} />
+          </div>
+          {formErrors.password && <span style={errorStyles}>Password {formErrors.password}</span>}
+        </div>
         <button type="submit">SIGN UP</button>
       </form>
     </main>
