@@ -1,16 +1,13 @@
-export function handleValidation({
-  formValues,
-  setFormErrors
-}) {
-  const fields = formValues;
-  const errors = {};
-  let formIsValid = true;
-
-  //Email
-  if (!fields.email) {
+function verifyNotEmpty({ fields, field, errors, formIsValid }) {
+  if (!fields[field]) {
     formIsValid = false;
-    errors.email = 'cannot be empty';
+    errors[field] = 'cannot be empty';
   }
+}
+
+
+function verifyEmail({ fields, errors, formIsValid }) {
+  verifyNotEmpty({ fields, field: 'email', errors, formIsValid })
 
   if (fields.email) {
     let lastAtPos = fields.email.lastIndexOf('@');
@@ -29,42 +26,75 @@ export function handleValidation({
       errors.email = 'is not valid';
     }
   }
-  if (!fields.photo) {
-    formIsValid = false;
-    errors.photo = 'cannot be empty';
-  }
+}
 
-  if (fields.photo && fields.photo.size > 1024) {
-    formIsValid = false;
-    errors.photo = 'must be smaller than 1MB'
-  }
 
+function verifyPassword({ fields, errors, formIsValid }) {
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;
-
-  // Password
-  if (!fields.password) {
-    formIsValid = false;
-    errors.password = 'cannot be empty';
-  }
+  verifyNotEmpty({ fields, field: 'password', errors, formIsValid })
 
   if (fields.password) {
     if (!fields.password.match(passwordRules)) {
       formIsValid = false;
       errors.password = 'must contain atleast 1 number & 1 special character'
     }
-
     if (fields.password.length < 8) {
       formIsValid = false;
       errors.password = 'must be at least 8 characters'
     }
   }
+}
 
-  // passwordConfirm
-  if (fields.passwordConfirm !== fields.password) {
-    formIsValid = false;
-    errors.passwordConfirm = `doesn't match password above`
+export function handleValidation({
+  formValues,
+  setFormErrors,
+  type = 'signUp'
+}) {
+  const fields = formValues;
+  const errors = {};
+  let formIsValid = true;
+
+
+  // validate fields for User Sign In
+  if (type === 'signIn') {
+    verifyEmail({ fields, errors, formIsValid });
+    verifyPassword({ fields, errors, formIsValid });
+    setFormErrors(errors);
+    return formIsValid;
   }
-  setFormErrors(errors);
 
-  return formIsValid;
+
+  // validate fields for User verification
+  if (type === 'verify') {
+    verifyEmail({ fields, errors, formIsValid });
+    // check verification code field is not empty
+    verifyNotEmpty({ fields, field: 'verification', errors, formIsValid })
+
+    setFormErrors(errors);
+    return formIsValid;
+  }
+
+
+  // validate fields for User Sign Up
+  if (type === 'signUp') {
+    verifyEmail({ fields, errors, formIsValid });
+    verifyPassword({ fields, errors, formIsValid });
+
+    // Photo
+    verifyNotEmpty({ fields, field: 'photo', errors, formIsValid })
+    if (fields.photo && fields.photo.size > 1024000) {
+      formIsValid = false;
+      errors.photo = `must be smaller than 1MB ${fields.photo.size}`
+    }
+
+    // passwordConfirm
+    verifyNotEmpty({ fields, field: 'passwordConfirm', errors, formIsValid })
+    if (fields.passwordConfirm !== fields.password) {
+      formIsValid = false;
+      errors.passwordConfirm = `doesn't match password above`
+    }
+
+    setFormErrors(errors);
+    return formIsValid;
+  }
 };
