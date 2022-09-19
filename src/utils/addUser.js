@@ -8,7 +8,7 @@ const poolData = {
   ClientId: process.env.GATSBY_AWS_CLIENT_ID,
 };
 
-const userPool = new CognitoUserPool(poolData);
+export const userPool = new CognitoUserPool(poolData);
 const attributeList = [];
 
 export function addUser({ email, photo, password }) {
@@ -33,7 +33,6 @@ export function addUser({ email, photo, password }) {
   ) {
     if (err) {
       alert(err.message || JSON.stringify(err));
-      // ! delete photo from S3 bucket on fail
       return;
     }
     const cognitoUser = result.user;
