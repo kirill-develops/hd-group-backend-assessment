@@ -61,8 +61,7 @@ const Verify = ({ location }) => {
     e.preventDefault();
 
 
-    // boolean value representing return from handleValidation function. Checks
-    // to see if form values are valid
+    // boolean value representing return from handleValidation function. Checks to see if form values are valid
     const isValid = handleValidation({ formValues, setFormErrors, type: 'verify' });
 
     if (isValid) {
