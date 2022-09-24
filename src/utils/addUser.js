@@ -19,7 +19,7 @@ export function addUser({ email, photo, password }) {
   };
   const dataPhoto = {
     Name: 'picture',
-    Value: 'temp' // ! change to s3 address to file
+    Value: email + "/" + photo.name
   };
 
   const attributeEmail = new CognitoUserAttribute(dataEmail);
