@@ -37,10 +37,10 @@ const errorStyles = {
 }
 
 
-const SignInPage = () => {
+const SignInPage = ({ location }) => {
   // state and handler function for form values and updating them
   const [formValues, setFormValues] = useState({
-    email: '',
+    email: location?.state?.email || '',
     password: '',
   })
   const handleFormValueChange = useCallback((e) => {
@@ -72,9 +72,9 @@ const SignInPage = () => {
 
     // deconstructed values from form inputs
     const { email, password } = formValues;
+
     // boolean value representing return from handleValidation function. Checks
     // to see if form values are valid
-
     const isValid = handleValidation({ formValues, setFormErrors, type: 'signIn' });
 
     if (isValid) {
@@ -123,9 +123,8 @@ const SignInPage = () => {
         <button type="submit">SIGN IN</button>
       </form>
       <div>
-        <a href='./verify'>Verify Email</a>
-        <span>{" "}</span>
-        <a href='./'>Sign Up</a></div>
+        <a href='./'>Sign Up</a>
+      </div>
     </main>
   );
 };
