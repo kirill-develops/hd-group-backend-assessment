@@ -17,7 +17,7 @@ export function authenticateUser({ email, password }) {
 
   cognitoUser.authenticateUser(authenticationDetails, {
     onSuccess: function (result) {
-      const accessToken = result.getAccessToken().getJwtToken();
+      const idToken = result.getIdToken().getJwtToken();
       const COGNITO_ID = `cognito-idp.${process.env.GATSBY_AWS_S3_REGION}.amazonaws.com/${process.env.GATSBY_AWS_USER_POOL_ID}`
 
       AWS.config.region = process.env.GATSBY_AWS_S3_REGION;
@@ -25,17 +25,15 @@ export function authenticateUser({ email, password }) {
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: process.env.GATSBY_AWS_IDENTITY_POOL_ID,
         Logins: {
-          [COGNITO_ID]: result
-            .getIdToken()
-            .getJwtToken(),
+          [COGNITO_ID]: idToken
         },
       });
 
-      AWS.config.credentials.refresh(error => {
-        if (error) {
-          console.error(error);
+      AWS.config.credentials.refresh(err => {
+        if (err) {
+          console.error('Error: ', err);
         } else {
-          console.log('Successfully logged!');
+          console.log('Successfully logged in!');
           navigate('/dashboard', { state: { email, password } });
         }
       });

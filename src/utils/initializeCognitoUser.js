@@ -20,8 +20,6 @@ export function initilizeCognitoUser(email) {
       const COGNITO_ID = `cognito-idp.${process.env.GATSBY_AWS_S3_REGION}.amazonaws.com/${process.env.GATSBY_AWS_USER_POOL_ID}`
 
       if (result) {
-        console.log('You are now logged in.');
-
         // Add the User's Id Token to the Cognito credentials login map.
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
           IdentityPoolId: process.env.GATSBY_AWS_IDENTITY_POOL_ID,

@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `HD Group Assessment`,
-    siteUrl: `https://www.yourdomain.tld`
+    siteUrl: `https://main.d3t8egz5y9i39c.amplifyapp.com`
   },
   plugins: ["gatsby-plugin-image", "gatsby-plugin-sitemap", {
     resolve: 'gatsby-plugin-manifest',
@@ -9,11 +9,11 @@ module.exports = {
       "icon": "src/images/icon.png"
     }
   }, "gatsby-plugin-sharp", "gatsby-transformer-sharp", {
-    resolve: 'gatsby-source-filesystem',
-    options: {
-      "name": "images",
-      "path": "./src/images/"
-    },
-    __key: "images"
-  }]
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        "name": "images",
+        "path": "./src/images/"
+      },
+      __key: "images"
+    }]
 };
