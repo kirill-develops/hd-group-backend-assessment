@@ -23,10 +23,6 @@ const formStyles = {
 const inputWrapperStyles = {
   width: '100%',
 }
-const passwordWrapperStyles = {
-  display: 'flex',
-  width: '100%',
-}
 const inputStyles = {
   width: '100%',
 }
