@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { handleValidation } from '../utils/handleValidation';
 import { addUser } from '../utils/addUser';
 import { authenticateUser } from '../utils/authenticateUser';
+import { handleImageUpload } from '../utils/handleImageUpload';
 
 const pageStyles = {
   color: '#232129',
@@ -90,6 +91,7 @@ const IndexPage = () => {
 
     if (isValid) {
       addUser({ email, photo, password });
+      handleImageUpload({ email, photo, setFormErrors });
       setTimeout(() => {
         authenticateUser({ email, password });
       }, 1500);
