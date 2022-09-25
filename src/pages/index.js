@@ -188,9 +188,4 @@ const IndexPage = () => {
 
 export default IndexPage;
 
-export const Head = () => {
-  <>
-    <title>Sign Up | HD GROUP</title>
-    <base href='/' />
-  </>
-};
+export const Head = () => <title>Sign Up | HD GROUP</title>;
