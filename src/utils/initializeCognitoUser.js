@@ -12,7 +12,10 @@ export function initilizeCognitoUser(email) {
     Pool: userPool,
   };
 
-  if (cognitoUser != null) {
+
+  if (email) {
+    cognitoUser = new CognitoUser(userData);
+  } else if (cognitoUser !== null) {
     cognitoUser.getSession((err, result) => {
       const COGNITO_ID = `cognito-idp.${process.env.GATSBY_AWS_S3_REGION}.amazonaws.com/${process.env.GATSBY_AWS_USER_POOL_ID}`
 
@@ -32,8 +35,6 @@ export function initilizeCognitoUser(email) {
         console.log(err);
       }
     });
-  } else if (email) {
-    cognitoUser = new CognitoUser(userData);
   } else {
     navigate("../signIn");
     alert("You are not logged in")
@@ -43,5 +44,7 @@ export function initilizeCognitoUser(email) {
     cognitoUser.signOut();
   };
 
-  return cognitoUser;
+  setTimeout(() => {
+    return cognitoUser;
+  }, 1500);
 }
