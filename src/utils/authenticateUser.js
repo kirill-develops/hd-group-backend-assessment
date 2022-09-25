@@ -36,6 +36,7 @@ export function authenticateUser({ email, password }) {
           console.error(error);
         } else {
           console.log('Successfully logged!');
+          navigate('/dashboard', { state: { email, password } });
         }
       });
     },
