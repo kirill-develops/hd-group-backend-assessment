@@ -44,7 +44,6 @@ export function initilizeCognitoUser(email) {
     cognitoUser.signOut();
   };
 
-  setTimeout(() => {
-    return cognitoUser;
-  }, 1500);
+
+  return cognitoUser;
 }
