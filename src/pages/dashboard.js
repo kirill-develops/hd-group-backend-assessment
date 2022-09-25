@@ -1,5 +1,6 @@
 import { navigate } from 'gatsby';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { getUserAttributes } from '../utils/getUserAttributes';
 import { initilizeCognitoUser } from '../utils/initializeCognitoUser';
 
 
@@ -41,6 +42,11 @@ const Dashboard = () => {
     email: 'loading',
     picture: 'loading'
   });
+  useEffect(() => {
+    getUserAttributes(setAttributeList);
+  }, []);
+
+
   const [picture, setPicture] = useState(null);
 
 
