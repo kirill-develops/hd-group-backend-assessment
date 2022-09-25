@@ -54,10 +54,20 @@ const IndexPage = () => {
     })
   }, [formValues]);
   const handlePhotoUpload = useCallback((e) => {
-    setFormValues({
-      ...formValues,
-      photo: e.target.files[0]
-    })
+    const fileName = e.target.files[0].name;
+    const idxDot = fileName.lastIndexOf(".") + 1;
+    const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    const fileTypes = ['jpg', 'jpeg', 'png', 'svg']
+    if (fileTypes.includes(extFile)) {
+      setFormValues({
+        ...formValues,
+        photo: e.target.files[0]
+      })
+    } else {
+      alert("Only jpg/jpeg, svg and png files are allowed!");
+      e.target.value = '';
+    }
+
   }, [formValues])
 
 
@@ -178,4 +188,9 @@ const IndexPage = () => {
 
 export default IndexPage;
 
-export const Head = () => <title>Sign Up | HD GROUP</title>;
+export const Head = () => {
+  <>
+    <title>Sign Up | HD GROUP</title>
+    <base href='/' />
+  </>
+};
