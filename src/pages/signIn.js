@@ -1,3 +1,4 @@
+import { Link } from 'gatsby';
 import React, { useCallback, useState } from 'react';
 import { authenticateUser } from '../utils/authenticateUser';
 import { handleValidation } from '../utils/handleValidation';
@@ -123,7 +124,7 @@ const SignInPage = ({ location }) => {
         <button type="submit">SIGN IN</button>
       </form>
       <div>
-        <a href='./'>Sign Up</a>
+        <Link to='/'>Sign Up</Link>
       </div>
     </main>
   );

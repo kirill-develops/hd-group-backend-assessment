@@ -1,3 +1,4 @@
+import { Link } from 'gatsby';
 import React, { useCallback, useState } from 'react';
 import { handleValidation } from '../utils/handleValidation';
 import { verifyUser } from '../utils/verifyUser';
@@ -99,9 +100,9 @@ const Verify = ({ location }) => {
         <button type="submit">VERIFY</button>
       </form>
       <div>
-        <a href='./'>Sign Up</a>
+        <Link href='/'>Sign Up</Link>
         <span>{" "}</span>
-        <a href='./signIn'>Sign In</a>
+        <Link href='/signIn'>Sign In</Link>
       </div>
     </main>
   );

@@ -3,6 +3,7 @@ import { handleValidation } from '../utils/handleValidation';
 import { addUser } from '../utils/addUser';
 import { authenticateUser } from '../utils/authenticateUser';
 import { handleImageUpload } from '../utils/handleImageUpload';
+import { Link } from 'gatsby';
 
 const pageStyles = {
   color: '#232129',
@@ -168,7 +169,7 @@ const IndexPage = () => {
         <button type="submit">SIGN UP</button>
       </form>
       <div>
-        <a href='./signIn'>Sign In</a>
+        <Link to='/signIn/'>Sign In</Link>
       </div>
     </main>
   );
