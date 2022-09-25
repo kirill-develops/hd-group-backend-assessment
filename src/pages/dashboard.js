@@ -1,6 +1,7 @@
 import { navigate } from 'gatsby';
 import React, { useCallback, useEffect, useState } from 'react';
 import { getUserAttributes } from '../utils/getUserAttributes';
+import { getUserImage } from '../utils/getUserImage';
 import { initilizeCognitoUser } from '../utils/initializeCognitoUser';
 
 
@@ -48,6 +49,11 @@ const Dashboard = () => {
 
 
   const [picture, setPicture] = useState(null);
+  useEffect(() => {
+    if (attributeList.picture !== 'loading') {
+      getUserImage({ key: attributeList.picture, setPicture });
+    }
+  }, [attributeList]);
 
 
   const handleLogout = useCallback(() => {
