@@ -188,4 +188,9 @@ const IndexPage = () => {
 
 export default IndexPage;
 
-export const Head = () => <title>Sign Up | HD GROUP</title>;
+export const Head = () => (<>
+  <title>Sign Up | HD GROUP</title>;
+  <meta property="og:title" content="Sign Up | Backend Assessment" />
+  <meta property="og:description" content="A simple AWS sign-up & sign-in workflow meant to demonstrate comprehension of necessary AWS microservices." />
+  <meta property="og:type" content="article" />
+</>)
