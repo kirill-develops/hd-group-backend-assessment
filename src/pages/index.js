@@ -157,6 +157,10 @@ const IndexPage = () => {
           </div>
           {formErrors.password
             && <span style={errorStyles}>Password {formErrors.password}</span>}
+          <p>Password must contain:</p>
+          <p>-at least 1 number</p>
+          <p>-at least 1 special character &#40; ^ $ * . &#91; &#93; &#123; &#125; &#40; &#41; ? - &#34; ! @ # % & / \ , &#62; &#60;	&#39; : ; | _ ~ &#96; + = &#41;</p>
+          <p>-at least 1 lowercase letter</p>
         </div>
         <div style={inputWrapperStyles}>
           <div style={passwordWrapperStyles}>
