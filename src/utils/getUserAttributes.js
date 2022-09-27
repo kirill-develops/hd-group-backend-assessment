@@ -3,7 +3,7 @@ import { initilizeCognitoUser } from './initializeCognitoUser';
 export function getUserAttributes(setAttributeList) {
   const cognitoUser = initilizeCognitoUser();
 
-  if (cognitoUser === null) return;
+  if (cognitoUser === null) return false;
 
   cognitoUser?.getUserAttributes((err, result) => {
     if (err) {
@@ -11,12 +11,14 @@ export function getUserAttributes(setAttributeList) {
       return;
     }
 
-    let attributeData = {};
+    const attributes = {};
     for (let i = 0; i < result.length; i++) {
       const attributeName = result[i].getName();
       const attributeValue = result[i].getValue();
-      attributeData[attributeName] = attributeValue;
+      attributes[attributeName] = attributeValue;
     }
-    setAttributeList(attributeData);
+    setAttributeList(attributes);
   })
+
+  return true;
 }

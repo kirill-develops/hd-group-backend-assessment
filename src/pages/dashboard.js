@@ -44,13 +44,17 @@ const Dashboard = () => {
     picture: 'loading'
   });
   useEffect(() => {
-    getUserAttributes(setAttributeList);
+    const attributes = getUserAttributes(setAttributeList);
+    if (!attributes) {
+      navigate("../signIn");
+      alert("You are not logged in");
+    }
   }, []);
 
 
   const [picture, setPicture] = useState(null);
   useEffect(() => {
-    if (attributeList.picture !== 'loading')
+    if (attributeList.picture !== 'loading') {
       (async () => {
         try {
           const imgUrl = await getUserImage({ key: attributeList.picture });
@@ -59,6 +63,7 @@ const Dashboard = () => {
           console.log("Error", err);
         }
       })();
+    }
   }, [attributeList]);
 
 

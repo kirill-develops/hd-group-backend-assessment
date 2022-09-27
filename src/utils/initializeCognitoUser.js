@@ -1,7 +1,6 @@
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { userPool } from "./addUser";
 import * as AWS from 'aws-sdk/global';
-import { navigate } from "gatsby";
 
 
 export function initilizeCognitoUser(email) {
@@ -33,9 +32,6 @@ export function initilizeCognitoUser(email) {
         console.log(err);
       }
     });
-  } else {
-    navigate("../signIn");
-    alert("You are not logged in")
   }
 
   initilizeCognitoUser.signOut = () => {
