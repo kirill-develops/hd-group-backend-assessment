@@ -52,13 +52,13 @@ const Dashboard = () => {
   }, []);
 
 
-  const [picture, setPicture] = useState(null);
+  const [pictureUrl, setPictureUrl] = useState(null);
   useEffect(() => {
     if (attributeList.picture !== 'loading') {
       (async () => {
         try {
           const imgUrl = await getUserImage({ key: attributeList.picture });
-          setPicture(imgUrl);
+          setPictureUrl(imgUrl);
         } catch (err) {
           console.log("Error", err);
         }
@@ -74,14 +74,14 @@ const Dashboard = () => {
   }, []);
 
 
-  const pageJSX = picture !== null ? (
+  const pageJSX = pictureUrl !== null ? (
     <>
       <section style={sectionStyles}>
         <h2>user email:{" "}
           <span>{attributeList?.email}</span>
         </h2>
         <h2>user photo:</h2>
-        <img src={picture}
+        <img src={pictureUrl}
           style={imgStyles}
           alt={`${attributeList?.email || 'user'} profile`}
         />
