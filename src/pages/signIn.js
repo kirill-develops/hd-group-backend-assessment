@@ -137,7 +137,7 @@ const SignInPage = ({ location }) => {
 export default SignInPage;
 
 export const Head = () => (<>
-  <title>Sign In | HD GROUP</title>;
+  <title>Sign In | HD GROUP</title>
   <meta property="og:title" content="Sign In | Backend Assessment" />
   <meta property="og:description" content="A simple AWS sign-up & sign-in workflow meant to demonstrate comprehension of necessary AWS microservices." />
   <meta property="og:type" content="website" />
