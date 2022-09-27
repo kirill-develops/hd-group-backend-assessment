@@ -12,7 +12,7 @@ export function initilizeCognitoUser(email) {
       Pool: userPool,
     };
 
-    cognitoUser = new CognitoUser(userData);
+    return cognitoUser = new CognitoUser(userData);
   }
 
 
