@@ -100,9 +100,19 @@ const IndexPage = () => {
     const { email, photo, password } = formValues;
     const isValid = handleValidation({ formValues, setFormErrors, type: 'signUp' });
 
+
     if (isValid) {
       addUser({ email, photo, password });
-      handleImageUpload({ email, photo, setFormErrors });
+      (async () => {
+        try {
+          await handleImageUpload({ email, photo });
+        } catch (err) {
+          console.log("Error", err);
+          setFormErrors({
+            photo: 'upload encountered error. Please try again'
+          });
+        }
+      })();
       setTimeout(() => {
         authenticateUser({ email, password });
       }, 1500);
@@ -196,5 +206,5 @@ export const Head = () => (<>
   <title>Sign Up | HD GROUP</title>;
   <meta property="og:title" content="Sign Up | Backend Assessment" />
   <meta property="og:description" content="A simple AWS sign-up & sign-in workflow meant to demonstrate comprehension of necessary AWS microservices." />
-  <meta property="og:type" content="article" />
+  <meta property="og:type" content="website" />
 </>)

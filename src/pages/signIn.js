@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { authenticateUser } from '../utils/authenticateUser';
 import { handleValidation } from '../utils/handleValidation';
 
+
 const pageStyles = {
   color: '#232129',
   padding: 96,
@@ -63,6 +64,7 @@ const SignInPage = ({ location }) => {
     };
   }, [passwordType]);
 
+
   // state for form errors used during validation & state rendered in window
   const [formErrors, setFormErrors] = useState({});
 
@@ -82,6 +84,7 @@ const SignInPage = ({ location }) => {
       authenticateUser({ email, password });
     };
   }, [formValues]);
+
 
   // render component
   return (
@@ -130,6 +133,12 @@ const SignInPage = ({ location }) => {
   );
 };
 
+
 export default SignInPage;
 
-export const Head = () => <title>Sign In | HD GROUP</title>;
+export const Head = () => (<>
+  <title>Sign In | HD GROUP</title>;
+  <meta property="og:title" content="Sign In | Backend Assessment" />
+  <meta property="og:description" content="A simple AWS sign-up & sign-in workflow meant to demonstrate comprehension of necessary AWS microservices." />
+  <meta property="og:type" content="website" />
+</>)
