@@ -1,5 +1,5 @@
 import { Link } from 'gatsby';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { authenticateUser } from '../utils/authenticateUser';
 import { handleValidation } from '../utils/handleValidation';
 
@@ -53,16 +53,15 @@ const SignInPage = ({ location }) => {
   }, [formValues]);
 
 
-  // state and handler function to reveal password to user
-  const [passwordType, setPasswordType] = useState('password')
-  const handleReveal = useCallback((e) => {
-    if (passwordType === 'password') {
-      setPasswordType('text')
+  const passwordTypeRef = useRef();
+  const handleReveal = () => {
+    if (passwordTypeRef.current.type === 'text') {
+      return passwordTypeRef.current.type = 'password'
     };
-    if (passwordType === 'text') {
-      setPasswordType('password')
+    if (passwordTypeRef.current.type === 'password') {
+      return passwordTypeRef.current.type = 'text'
     };
-  }, [passwordType]);
+  };
 
 
   // state for form errors used during validation & state rendered in window
@@ -108,7 +107,8 @@ const SignInPage = ({ location }) => {
         <div style={inputWrapperStyles}>
           <div style={passwordWrapperStyles}>
             <input
-              type={passwordType}
+              type={'password'}
+              ref={passwordTypeRef}
               placeholder="password"
               name="password"
               value={formValues.password}

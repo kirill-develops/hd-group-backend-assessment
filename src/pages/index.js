@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { handleValidation } from '../utils/handleValidation';
 import { addUser } from '../utils/addUser';
 import { authenticateUser } from '../utils/authenticateUser';
 import { handleImageUpload } from '../utils/handleImageUpload';
 import { Link } from 'gatsby';
+
 
 const pageStyles = {
   color: '#232129',
@@ -57,7 +58,8 @@ const IndexPage = () => {
     const fileName = e.target.files[0].name;
     const idxDot = fileName.lastIndexOf(".") + 1;
     const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-    const fileTypes = ['jpg', 'jpeg', 'png', 'svg']
+    const fileTypes = ['jpg', 'jpeg', 'png', 'svg'];
+
     if (fileTypes.includes(extFile)) {
       setFormValues({
         ...formValues,
@@ -67,29 +69,27 @@ const IndexPage = () => {
       alert("Only jpg/jpeg, svg and png files are allowed!");
       e.target.value = '';
     }
+  }, [formValues]);
 
-  }, [formValues])
 
+  // Refs and handler function to reveal password to user
+  const passwordTypeRef1 = useRef();
+  const passwordTypeRef2 = useRef();
+  const passwordRefLib = {
+    password1: passwordTypeRef1.current,
+    password2: passwordTypeRef2.current,
+  }
+  const handleReveal = (e) => {
+    const targetName = e.target.name;
+    const clickedPassword = passwordRefLib[targetName];
 
-  // state and handler function to reveal password to user
-  const [passwordType, setPasswordType] = useState({
-    password1: 'password',
-    password2: 'password'
-  })
-  const handleReveal = useCallback((e) => {
-    if (passwordType[e.target.name] === 'password') {
-      setPasswordType({
-        ...passwordType,
-        [e.target.name]: 'text'
-      })
-    };
-    if (passwordType[e.target.name] === 'text') {
-      setPasswordType({
-        ...passwordType,
-        [e.target.name]: 'password'
-      })
-    };
-  }, [passwordType]);
+    if (clickedPassword.type === 'text') {
+      return clickedPassword.type = 'password'
+    }
+    if (clickedPassword.type === 'password') {
+      return clickedPassword.type = 'text'
+    }
+  };
 
 
   const [formErrors, setFormErrors] = useState({});
@@ -152,7 +152,8 @@ const IndexPage = () => {
         <div style={inputWrapperStyles}>
           <div style={passwordWrapperStyles}>
             <input
-              type={passwordType.password1}
+              type={'password'}
+              ref={passwordTypeRef1}
               placeholder="new password"
               name="password"
               value={formValues.password}
@@ -175,7 +176,8 @@ const IndexPage = () => {
         <div style={inputWrapperStyles}>
           <div style={passwordWrapperStyles}>
             <input
-              type={passwordType.password2}
+              type={'password'}
+              ref={passwordTypeRef2}
               placeholder="re-enter password"
               name="passwordConfirm"
               value={formValues.passwordConfirm}
