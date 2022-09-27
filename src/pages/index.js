@@ -100,9 +100,19 @@ const IndexPage = () => {
     const { email, photo, password } = formValues;
     const isValid = handleValidation({ formValues, setFormErrors, type: 'signUp' });
 
+
     if (isValid) {
       addUser({ email, photo, password });
-      handleImageUpload({ email, photo, setFormErrors });
+      (async () => {
+        try {
+          await handleImageUpload({ email, photo });
+        } catch (err) {
+          console.log("Error", err);
+          setFormErrors({
+            photo: 'upload encountered error. Please try again'
+          });
+        }
+      })();
       setTimeout(() => {
         authenticateUser({ email, password });
       }, 1500);

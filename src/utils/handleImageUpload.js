@@ -11,21 +11,13 @@ export const client = new S3Client({
 })
 
 // Upload file to specified bucket.
-export async function handleImageUpload({ email, photo, setFormErrors }) {
+export async function handleImageUpload({ email, photo }) {
   const uploadParams = {
     Bucket: process.env.GATSBY_AWS_BUCKET_NAME,
     Key: email + "/" + photo.name,
     Body: photo,
   };
 
-  try {
-    const data = await client.send(new PutObjectCommand(uploadParams));
-    return data;
-  } catch (err) {
-    console.log("Error", err);
-    setFormErrors({
-      photo: 'upload encountered error. Please try again'
-    });
-    return err;
-  }
+  const data = await client.send(new PutObjectCommand(uploadParams));
+  return data;
 };

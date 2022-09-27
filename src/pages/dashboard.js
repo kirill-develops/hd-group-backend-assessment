@@ -50,9 +50,15 @@ const Dashboard = () => {
 
   const [picture, setPicture] = useState(null);
   useEffect(() => {
-    if (attributeList.picture !== 'loading') {
-      getUserImage({ key: attributeList.picture, setPicture });
-    }
+    if (attributeList.picture !== 'loading')
+      (async () => {
+        try {
+          const imgUrl = await getUserImage({ key: attributeList.picture });
+          setPicture(imgUrl);
+        } catch (err) {
+          console.log("Error", err);
+        }
+      })();
   }, [attributeList]);
 
 
