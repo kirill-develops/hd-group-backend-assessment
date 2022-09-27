@@ -33,7 +33,6 @@ export function authenticateUser({ email, password }) {
         if (err) {
           console.error('Error: ', err);
         } else {
-          console.log('Successfully logged in!');
           navigate('/dashboard', { state: { email, password } });
         }
       });

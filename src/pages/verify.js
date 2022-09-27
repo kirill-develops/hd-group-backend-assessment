@@ -52,12 +52,10 @@ const Verify = ({ location }) => {
   // state for form errors used during validation & state rendered in window
   const [formErrors, setFormErrors] = useState({});
 
-
   // handler function for form submission
   const handleSubmit = useCallback((e) => {
     // prevent refresh of browser
     e.preventDefault();
-
 
     // boolean value representing return from handleValidation function. Checks to see if form values are valid
     const isValid = handleValidation({ formValues, setFormErrors, type: 'verify' });
