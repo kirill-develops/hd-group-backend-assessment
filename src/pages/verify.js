@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { handleValidation } from '../utils/handleValidation';
 import { verifyUser } from '../utils/verifyUser';
 
+
 const pageStyles = {
   color: '#232129',
   padding: 96,
@@ -107,6 +108,7 @@ const Verify = ({ location }) => {
     </main>
   );
 };
+
 
 export default Verify;
 
