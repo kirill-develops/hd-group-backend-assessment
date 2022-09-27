@@ -16,7 +16,7 @@ export function authenticateUser({ email, password }) {
   const authenticationDetails = new AuthenticationDetails(authenticationData);
 
   cognitoUser.authenticateUser(authenticationDetails, {
-    onSuccess: function (result) {
+    onSuccess: (result) => {
       const idToken = result.getIdToken().getJwtToken();
       const COGNITO_ID = `cognito-idp.${process.env.GATSBY_AWS_S3_REGION}.amazonaws.com/${process.env.GATSBY_AWS_USER_POOL_ID}`
 
@@ -33,7 +33,7 @@ export function authenticateUser({ email, password }) {
         if (err) {
           console.error('Error: ', err);
         } else {
-          navigate('/dashboard', { state: { email, password } });
+          navigate('/dashboard');
         }
       });
     },
