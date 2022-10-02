@@ -174,16 +174,18 @@ const IndexPage = () => {
             value={formValues.password}
             onChange={handleFormValueChange}
             endAdornment={
-              <InputAdornment position='end'>
+              <InputAdornment
+                position='end'
+              >
                 <IconButton
                   aria-label="toggle password visibility"
                   name='password1'
                   onClick={handleReveal}
                   edge="end"
                 >
+                  {passwordType.password1 === 'password'
+                    ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
-                {passwordType.password1 === 'password'
-                  ? <Visibility /> : <VisibilityOff />}
               </InputAdornment>
             }
           />
@@ -221,9 +223,9 @@ const IndexPage = () => {
                   onClick={handleReveal}
                   edge="end"
                 >
+                  {passwordType.password2 === 'password'
+                    ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
-                {passwordType.password2 === 'password'
-                  ? <Visibility /> : <VisibilityOff />}
               </InputAdornment>
             }
           />

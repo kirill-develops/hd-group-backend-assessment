@@ -122,8 +122,8 @@ const SignInPage = ({ location }) => {
                   onClick={handleReveal}
                   edge="end"
                 >
+                  {passwordType === 'password' ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
-                {passwordType === 'password' ? <Visibility /> : <VisibilityOff />}
               </InputAdornment>
             }
           />
