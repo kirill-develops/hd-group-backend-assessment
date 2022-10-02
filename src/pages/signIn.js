@@ -23,21 +23,6 @@ const formStyles = {
   alignItems: 'center',
   width: 'fit-content',
 }
-const inputWrapperStyles = {
-  width: '100%',
-}
-const passwordWrapperStyles = {
-  display: 'flex',
-  width: '100%',
-}
-const inputStyles = {
-  width: '100%',
-}
-const errorStyles = {
-  color: 'red',
-  display: 'block',
-  marginTop: "6px",
-}
 
 
 const SignInPage = ({ location }) => {
