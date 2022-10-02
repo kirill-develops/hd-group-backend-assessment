@@ -72,17 +72,17 @@ const IndexPage = () => {
     password1: 'password',
     password2: 'password'
   })
-  const handleReveal = useCallback((e) => {
-    if (passwordType[e.target.name] === 'password') {
+  const handleReveal = useCallback((prop) => {
+    if (passwordType[prop] === 'password') {
       setPasswordType({
         ...passwordType,
-        [e.target.name]: 'text'
+        [prop]: 'text'
       })
     };
-    if (passwordType[e.target.name] === 'text') {
+    if (passwordType[prop] === 'text') {
       setPasswordType({
         ...passwordType,
-        [e.target.name]: 'password'
+        [prop]: 'password'
       })
     };
   }, [passwordType]);
@@ -143,7 +143,11 @@ const IndexPage = () => {
           size='small'
           fullWidth
         >
-          <Button variant='outlined' component='label' fullWidth>
+          <Button
+            component='label'
+            variant='outlined'
+            color={(formValues.photo && 'success') || (formErrors.photo && 'error')}
+            fullWidth>
             UPLOAD PROFILE PIC
             <input
               hidden
@@ -155,7 +159,8 @@ const IndexPage = () => {
             />
           </Button>
           <FormHelperText>
-            {formErrors?.photo && `Photo ${formErrors?.photo}`}
+            {formErrors?.photo && !formValues.photo
+              && `Photo ${formErrors?.photo}`}
           </FormHelperText>
         </FormControl>
         <FormControl
@@ -179,8 +184,7 @@ const IndexPage = () => {
               >
                 <IconButton
                   aria-label="toggle password visibility"
-                  name='password1'
-                  onClick={handleReveal}
+                  onClick={() => handleReveal("password1")}
                   edge="end"
                 >
                   {passwordType.password1 === 'password'
@@ -219,8 +223,7 @@ const IndexPage = () => {
               <InputAdornment position='end'>
                 <IconButton
                   aria-label="toggle password visibility"
-                  name='password2'
-                  onClick={handleReveal}
+                  onClick={() => handleReveal('password2')}
                   edge="end"
                 >
                   {passwordType.password2 === 'password'
