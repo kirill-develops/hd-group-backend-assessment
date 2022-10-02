@@ -1,9 +1,11 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { handleValidation } from '../utils/handleValidation';
 import { addUser } from '../utils/addUser';
 import { authenticateUser } from '../utils/authenticateUser';
 import { handleImageUpload } from '../utils/handleImageUpload';
 import { Link } from 'gatsby';
+import { Box, Button, FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 const pageStyles = {
@@ -22,7 +24,6 @@ const formStyles = {
   flexDirection: 'column',
   alignItems: 'center',
   width: 'fit-content',
-  margin: 'auto',
 }
 const inputWrapperStyles = {
   width: '100%',
@@ -55,7 +56,9 @@ const IndexPage = () => {
     })
   }, [formValues]);
   const handlePhotoUpload = useCallback((e) => {
-    const fileName = e.target.files[0].name;
+    if (e.target.files.length === 0) return;
+
+    const fileName = e.target.files[0]?.name;
     const idxDot = fileName.lastIndexOf(".") + 1;
     const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
     const fileTypes = ['jpg', 'jpeg', 'png', 'svg'];
@@ -72,24 +75,25 @@ const IndexPage = () => {
   }, [formValues]);
 
 
-  // Refs and handler function to reveal password to user
-  const passwordTypeRef1 = useRef();
-  const passwordTypeRef2 = useRef();
-  const passwordRefLib = {
-    password1: passwordTypeRef1.current,
-    password2: passwordTypeRef2.current,
-  }
-  const handleReveal = (e) => {
-    const targetName = e.target.name;
-    const clickedPassword = passwordRefLib[targetName];
-
-    if (clickedPassword.type === 'text') {
-      return clickedPassword.type = 'password'
-    }
-    if (clickedPassword.type === 'password') {
-      return clickedPassword.type = 'text'
-    }
-  };
+  // state and handler function to reveal password to user
+  const [passwordType, setPasswordType] = useState({
+    password1: 'password',
+    password2: 'password'
+  })
+  const handleReveal = useCallback((e) => {
+    if (passwordType[e.target.name] === 'password') {
+      setPasswordType({
+        ...passwordType,
+        [e.target.name]: 'text'
+      })
+    };
+    if (passwordType[e.target.name] === 'text') {
+      setPasswordType({
+        ...passwordType,
+        [e.target.name]: 'password'
+      })
+    };
+  }, [passwordType]);
 
 
   const [formErrors, setFormErrors] = useState({});
@@ -123,77 +127,126 @@ const IndexPage = () => {
   return (
     <main style={pageStyles}>
       <h1 style={headingStyles}>Sign Up</h1>
-      <form
+      <Paper
+        component='form'
         onSubmit={handleSubmit}
-        style={formStyles}>
-        <div style={inputWrapperStyles}>
-          <input
-            type="email"
-            placeholder="email"
-            name="email"
-            value={formValues.email}
+        elevation={10}
+        sx={{ p: '1rem', m: '1rem auto', width: 'fit-content' }}
+        style={formStyles}
+      >
+        <TextField
+          label='EMAIL'
+          name="email"
+          variant='outlined'
+          type="email"
+          error={Boolean(formErrors?.email)}
+          helperText={formErrors?.email && `Email ${formErrors?.email}`}
+          value={formValues.email}
+          onChange={handleFormValueChange}
+          size='small'
+          fullWidth
+        />
+        <FormControl
+          error={Boolean(formErrors?.photo) || false}
+          size='small'
+          fullWidth
+        >
+          <Button variant='outlined' component='label' fullWidth>
+            UPLOAD PROFILE PIC
+            <input
+              hidden
+              type="file"
+              name="image"
+              accept='image/*'
+              onChange={handlePhotoUpload}
+              style={inputStyles}
+            />
+          </Button>
+          <FormHelperText>
+            {formErrors?.photo && `Photo ${formErrors?.photo}`}
+          </FormHelperText>
+        </FormControl>
+        <FormControl
+          error={Boolean(formErrors?.password) || false}
+          size='small'
+          fullWidth
+        >
+          <InputLabel
+            htmlFor='password'
+          >PASSWORD</InputLabel>
+          <OutlinedInput
+            name='password'
+            label='PASSWORD'
+            variant='outlined'
+            type={passwordType.password1}
+            value={formValues.password}
             onChange={handleFormValueChange}
-            style={inputStyles}
+            endAdornment={
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label="toggle password visibility"
+                  name='password1'
+                  onClick={handleReveal}
+                  edge="end"
+                >
+                </IconButton>
+                {passwordType.password1 === 'password'
+                  ? <Visibility /> : <VisibilityOff />}
+              </InputAdornment>
+            }
           />
-          {formErrors.email
-            && <span style={errorStyles}>Email {formErrors.email}</span>}
-        </div>
-        <div style={inputWrapperStyles}>
-          <input
-            type="file"
-            name="image"
-            accept='image/*'
-            onChange={handlePhotoUpload}
-            style={inputStyles}
+          <FormHelperText>
+            {formErrors?.password && `Password ${formErrors?.password}`}
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <span>Password must contain:</span>
+              <span> - at least 1 number</span>
+              <span> - at least 1 special character &#40; ^ $ * . &#91; &#93; &#123; &#125; &#40; &#41; ? - &#34; ! @ # % &amp; / \ , &#62; &#60;	&#39; : ; | _ ~ &#96; + = &#41;</span>
+              <span> - at least 1 lowercase letter &amp; 1 uppercase letter</span>
+            </Box>
+          </FormHelperText>
+        </FormControl>
+        <FormControl
+          error={Boolean(formErrors?.passwordConfirm) || false}
+          size='small'
+          fullWidth
+        >
+          <InputLabel
+            htmlFor='passwordConfirm'
+          >RE-ENTER PASSWORD
+          </InputLabel>
+          <OutlinedInput
+            name='passwordConfirm'
+            label="RE-ENTER PASSWORD"
+            variant='outlined'
+            type={passwordType.password2}
+            value={formValues.passwordConfirm}
+            onChange={handleFormValueChange}
+            endAdornment={
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label="toggle password visibility"
+                  name='password2'
+                  onClick={handleReveal}
+                  edge="end"
+                >
+                </IconButton>
+                {passwordType.password2 === 'password'
+                  ? <Visibility /> : <VisibilityOff />}
+              </InputAdornment>
+            }
           />
-          {formErrors.photo
-            && <span style={errorStyles}>Photo {formErrors.photo}</span>}
-        </div>
-        <div style={inputWrapperStyles}>
-          <div style={passwordWrapperStyles}>
-            <input
-              type={'password'}
-              ref={passwordTypeRef1}
-              placeholder="new password"
-              name="password"
-              value={formValues.password}
-              onChange={handleFormValueChange}
-              style={inputStyles}
-            />
-            <input
-              type='checkbox'
-              name='password1'
-              onClick={handleReveal}
-            />
-          </div>
-          {formErrors.password
-            && <span style={errorStyles}>Password {formErrors.password}</span>}
-          <p>Password must contain:</p>
-          <p> - at least 1 number</p>
-          <p> - at least 1 special character &#40; ^ $ * . &#91; &#93; &#123; &#125; &#40; &#41; ? - &#34; ! @ # % &amp; / \ , &#62; &#60;	&#39; : ; | _ ~ &#96; + = &#41;</p>
-          <p> - at least 1 lowercase letter &amp; 1 uppercase letter</p>
-        </div>
-        <div style={inputWrapperStyles}>
-          <div style={passwordWrapperStyles}>
-            <input
-              type={'password'}
-              ref={passwordTypeRef2}
-              placeholder="re-enter password"
-              name="passwordConfirm"
-              value={formValues.passwordConfirm}
-              onChange={handleFormValueChange}
-              style={inputStyles}
-            />
-            <input
-              type='checkbox'
-              name='password2'
-              onClick={handleReveal} />
-          </div>
-          {formErrors.passwordConfirm
-            && <span style={errorStyles}>Password {formErrors.passwordConfirm}</span>}
-        </div>
-        <button type="submit">SIGN UP</button>
-      </form>
+          <FormHelperText>
+            {formErrors?.passwordConfirm && `Password ${formErrors?.passwordConfirm}`}
+          </FormHelperText>
+        </FormControl>
+        <Button
+          variant='contained'
+          type='submit'
+          fullWidth
+        >
+          SIGN IN
+        </Button>
+      </Paper>
       <div>
         <Link to='/signIn/'>Sign In</Link>
       </div>
