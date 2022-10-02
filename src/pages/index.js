@@ -10,8 +10,12 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const pageStyles = {
   color: '#232129',
+  margin: '-8px',
   padding: 96,
+  minHeight: 'calc(100vh - 192px)',
   fontFamily: '-apple-system, Roboto, sans-serif, serif',
+  backgroundColor: '#FBAB7E',
+  backgroundImage: 'linear-gradient(62deg, #FBAB7E 0 %, #F7CE68 100 %)',
 };
 const headingStyles = {
   marginTop: 0,

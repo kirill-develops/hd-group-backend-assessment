@@ -8,8 +8,11 @@ import { initilizeCognitoUser } from '../utils/initializeCognitoUser';
 
 const pageStyles = {
   color: '#232129',
+  margin: '-8px',
   padding: 96,
+  minHeight: 'calc(100vh - 192px)',
   fontFamily: '-apple-system, Roboto, sans-serif, serif',
+  backgroundImage: 'linear-gradient(45deg, #8baaaa 0%, #ae8b9c 100%)',
 };
 const headingStyles = {
   marginTop: 0,

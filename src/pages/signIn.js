@@ -8,8 +8,11 @@ import { handleValidation } from '../utils/handleValidation';
 
 const pageStyles = {
   color: '#232129',
+  margin: '-8px',
   padding: 96,
+  minHeight: 'calc(100vh - 192px)',
   fontFamily: '-apple-system, Roboto, sans-serif, serif',
+  backgroundImage: "linear-gradient(to top, #a7a6cb 0%, #8989ba 52%, #8989ba 100%)",
 };
 const headingStyles = {
   marginTop: 0,
