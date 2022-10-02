@@ -1,3 +1,4 @@
+import { Paper } from '@mui/material';
 import { navigate } from 'gatsby';
 import React, { useCallback, useEffect, useState } from 'react';
 import { getUserAttributes } from '../utils/getUserAttributes';
@@ -21,7 +22,6 @@ const sectionStyles = {
   alignItems: 'center',
   justifyContent: 'center',
   width: 'fit-content',
-  margin: 'auto',
 }
 const imgStyles = {
   maxWidth: '35%',
@@ -76,7 +76,12 @@ const Dashboard = () => {
 
   const pageJSX = pictureUrl !== null ? (
     <>
-      <section style={sectionStyles}>
+      <Paper
+        component='section'
+        elevation={10}
+        sx={{ p: '1rem', m: '1rem auto', width: 'fit-content' }}
+        style={sectionStyles}
+      >
         <h2>user email:{" "}
           <span>{attributeList?.email}</span>
         </h2>
@@ -85,7 +90,7 @@ const Dashboard = () => {
           style={imgStyles}
           alt={`${attributeList?.email || 'user'} profile`}
         />
-      </section>
+      </Paper>
       <div>
         <button onClick={handleLogout}
           style={linkStyles}>

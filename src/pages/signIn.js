@@ -1,5 +1,7 @@
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Button, FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField } from '@mui/material';
 import { Link } from 'gatsby';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { authenticateUser } from '../utils/authenticateUser';
 import { handleValidation } from '../utils/handleValidation';
 
@@ -20,7 +22,6 @@ const formStyles = {
   flexDirection: 'column',
   alignItems: 'center',
   width: 'fit-content',
-  margin: 'auto',
 }
 const inputWrapperStyles = {
   width: '100%',
@@ -53,15 +54,16 @@ const SignInPage = ({ location }) => {
   }, [formValues]);
 
 
-  const passwordTypeRef = useRef();
-  const handleReveal = () => {
-    if (passwordTypeRef.current.type === 'text') {
-      return passwordTypeRef.current.type = 'password'
+  // state and handler function to reveal password to user
+  const [passwordType, setPasswordType] = useState('password')
+  const handleReveal = useCallback((e) => {
+    if (passwordType === 'password') {
+      setPasswordType('text')
     };
-    if (passwordTypeRef.current.type === 'password') {
-      return passwordTypeRef.current.type = 'text'
+    if (passwordType === 'text') {
+      setPasswordType('password')
     };
-  };
+  }, [passwordType]);
 
 
   // state for form errors used during validation & state rendered in window
@@ -89,47 +91,70 @@ const SignInPage = ({ location }) => {
   return (
     <main style={pageStyles}>
       <h1 style={headingStyles}>Sign In</h1>
-      <form
+      <Paper
+        component='form'
         onSubmit={handleSubmit}
-        style={formStyles}>
-        <div style={inputWrapperStyles}>
-          <input
-            type="email"
-            placeholder="email"
-            name="email"
-            value={formValues.email}
+        elevation={10}
+        sx={{ p: '1rem', m: '1rem auto', width: 'fit-content' }}
+        style={formStyles}
+      >
+        <TextField
+          label='EMAIL'
+          name="email"
+          variant="outlined"
+          type='email'
+          error={Boolean(formErrors?.email)}
+          helperText={formErrors?.email && `Email ${formErrors?.email}`}
+          value={formValues.email}
+          onChange={handleFormValueChange}
+          size="small"
+          fullWidth
+        />
+        <FormControl>
+          <InputLabel
+            htmlFor="password"
+            size='small'
+            error={Boolean(formErrors?.password) || false}
+          >PASSWORD</InputLabel>
+          <OutlinedInput
+            label='PASSWORD'
+            name="password"
+            variant="outlined"
+            type={passwordType}
+            error={Boolean(formErrors?.password) || false}
+            value={formValues.password}
             onChange={handleFormValueChange}
-            style={inputStyles}
+            size="small"
+            fullWidth
+            endAdornment={
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label="toggle password visibility"
+                  name='passwordReveal'
+                  onClick={handleReveal}
+                  edge="end"
+                >
+                </IconButton>
+                {passwordType === 'password' ? <Visibility /> : <VisibilityOff />}
+              </InputAdornment>
+            }
           />
-          {formErrors.email
-            && <span style={errorStyles}>Email {formErrors.email}</span>}
-        </div>
-        <div style={inputWrapperStyles}>
-          <div style={passwordWrapperStyles}>
-            <input
-              type={'password'}
-              ref={passwordTypeRef}
-              placeholder="password"
-              name="password"
-              value={formValues.password}
-              onChange={handleFormValueChange}
-              style={inputStyles}
-            />
-            <input
-              type='checkbox'
-              name='passwordReveal'
-              onClick={handleReveal}
-            />
-          </div>
-          {formErrors.password
-            && <span style={errorStyles}>Password {formErrors.password}</span>}
-        </div>
-        <button type="submit">SIGN IN</button>
-      </form>
+          <FormHelperText sx={{ color: '#c51b25' }}>
+            {formErrors?.password && `Password ${formErrors?.password}`}
+          </FormHelperText>
+        </FormControl>
+        <Button
+          variant='contained'
+          type='submit'
+          fullWidth
+        >
+          SIGN IN
+        </Button>
+      </Paper>
       <div>
         <Link to='/'>Sign Up</Link>
       </div>
-    </main>
+    </main >
   );
 };
 
