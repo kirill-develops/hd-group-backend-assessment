@@ -24,7 +24,7 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
     "amazon-cognito-identity-js": "^5.2.10",
-    "aws-sdk": "^2.1217.0",
+    "aws-sdk": "^2.1357.0",
     "gatsby": "^4.23.0",
     "gatsby-plugin-image": "^2.23.0",
     "gatsby-plugin-manifest": "^4.23.0",
