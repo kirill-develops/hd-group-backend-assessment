@@ -15,8 +15,8 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.171.0",
-    "@aws-sdk/credential-providers": "^3.171.0",
+    "@aws-sdk/client-s3": "^3.350.0",
+    "@aws-sdk/credential-providers": "^3.350.0",
     "@aws-sdk/middleware-endpoint": "^3.178.0",
     "@aws-sdk/s3-request-presigner": "^3.178.0",
     "@emotion/react": "^11.10.4",
